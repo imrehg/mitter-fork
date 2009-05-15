@@ -216,10 +216,11 @@ class Twitter(object):
         user_callback(data, error, *args, **kwargs)
         return
 
-    def update(self, status, callback, *args, **kwargs):
+    def update(self, status, callback, in_reply_to_status_id = 0, *args, **kwargs):
         """Update the user status."""
 
-        body = urllib.urlencode({'status': status, 'source': 'mitter'})
+        body = urllib.urlencode({'status': status, 'source': 'mitter', \
+            'in_reply_to_status_id': in_reply_to_status_id})
         self.log.debug('Message to twitter: %s' % (body))
 
         # same as the friends timeline, we call our own callback to convert
