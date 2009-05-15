@@ -189,6 +189,9 @@ class Interface(object):
         self.set_auto_refresh()
 
         self.window.set_focus(self.update_text)
+        
+        # variable to store reply id
+        self.in_reply_to_status_id = 0
         return
 
     # ------------------------------------------------------------
@@ -876,7 +879,8 @@ class Interface(object):
                 self.window.set_focus(self.update_text)
                 return
 
-        data = self.twitter.update(status, self.post_update_status)
+        data = self.twitter.update(status, self.post_update_status, \
+            self.in_reply_to_status_id)
 
     def post_update_status(self, data, error):
         """Function called after we receive the answer from the update
@@ -901,6 +905,7 @@ class Interface(object):
 
             gtk.gdk.threads_enter()
             self.update_text.set_text("")
+            self.in_reply_to_status_id = 0
             gtk.gdk.threads_leave()
 
         gtk.gdk.threads_enter()
@@ -995,6 +1000,9 @@ class Interface(object):
         self.update_text.set_text(status)
         self.window.set_focus(self.update_text)
         self.update_text.set_position(len(status))
+
+        self.in_reply_to_status_id = int(self.grid_store.get_value(iter, Columns.ID))
+        self.log.debug('In reply to: %d' % (self.in_reply_to_status_id))
 
     def retweet(self, widget, user_data=None):
         """Retweet by putting the string rt and username in your input"""
