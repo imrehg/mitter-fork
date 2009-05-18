@@ -1,0 +1,8 @@
+2009-05-18: Gergely Imreh
+
+  mitter-fork: Created new fork from stable mitter 0.4.5
+     There is a developement version, but currently too
+     experimental, i.e. it is pretty much broken. Could
+     be fixed, though it looks a lot of work. In the
+     meantime, some features can be added to this fork.
+  feature: _in_reply_to_id referencing
