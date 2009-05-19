@@ -259,6 +259,13 @@ class Interface(object):
         popup_menu = gtk.Menu()
         popup_menu_items = []
 
+        # Display time of last tweet
+        latest_tw = self.grid_store.get_iter_first()
+        latest_tw_time = self.grid_store.get_value(latest_tw, Columns.DATETIME)
+        latest_tw_time_human = timesince.timesince(latest_tw_time)
+        item = gtk.MenuItem('Last tweet %s ago' % (latest_tw_time_human))
+        popup_menu_items.append(item)
+
         # Do refresh from status icon
         item = gtk.ImageMenuItem('gtk-refresh', None)
         item.connect('activate', self.refresh)
