@@ -61,21 +61,16 @@ def options(parser):
     return
 
 # Constants
-
 MAX_STATUS_DISPLAY = 60
 
 url_re = re.compile(r'(https?://[^\s\n\r]+)', re.I)
+
 
 class Columns:
     (PIC, NAME, MESSAGE, USERNAME, ID, DATETIME, ALL_DATA) = range(7)
 
 
-# This is the main class, used by the mitter executable to display the
-# interface.
-
-
 class Interface(object):
-
     """Linux/GTK interface for Mitter."""
 
     def __init__(self, save_callback, default_username, default_password, \
@@ -105,12 +100,12 @@ class Interface(object):
         self.app_icon = util.find_image('mitter.png')
         self.app_icon_alert = util.find_image('mitter-new.png')
         if self.app_icon and self.app_icon_alert:
-            # if there are no icon files, there is no way to setup 
-            # the systray 
+            # if there are no icon files, there is no way to setup
+            # the systray
             self.systray_setup()
         else:
             self.systray = None
-        
+
         good_image = util.find_image('unknown.png')
         if good_image:
             self.default_pixmap = gtk.gdk.pixbuf_new_from_file(good_image)
@@ -189,7 +184,7 @@ class Interface(object):
         self.set_auto_refresh()
 
         self.window.set_focus(self.update_text)
-        
+
         # variable to store reply id
         self.in_reply_to_status_id = 0
         return
@@ -197,7 +192,6 @@ class Interface(object):
     # ------------------------------------------------------------
     # Window creation functions
     # ------------------------------------------------------------
-
     def main_window(self, initial_width, initial_height,
                             initial_pos_x, initial_pos_y):
         """Creates the main window and set its properties."""
@@ -258,25 +252,28 @@ class Interface(object):
             self.window.present()
 
     def systray_popup(self, widget, button, activate_time, user_param=None):
+        """System tray icon pop-up menu.
+        Appears when icon receives right-click.
+        """
         self.log.debug("System tray icon: Popup menu activated")
-        
+
         popup_menu = gtk.Menu()
         popup_menu_items = []
-        
-        # Do refresh from icon
-        item = gtk.ImageMenuItem('gtk-refresh',None)
-        item.connect('activate',self.refresh)
+
+        # Do refresh from status icon
+        item = gtk.ImageMenuItem('gtk-refresh', None)
+        item.connect('activate', self.refresh)
         popup_menu_items.append(item)
 
         # Accidental protection
         item = gtk.SeparatorMenuItem()
         popup_menu_items.append(item)
-        
-        # Quit from icon
-        item = gtk.ImageMenuItem('gtk-quit',None)
-        item.connect('activate',self.quit)
+
+        # Quit from status icon
+        item = gtk.ImageMenuItem('gtk-quit', None)
+        item.connect('activate', self.quit)
         popup_menu_items.append(item)
-        
+
         # Join them all up
         for item in popup_menu_items:
             popup_menu.append(item)
@@ -348,7 +345,6 @@ class Interface(object):
     # ------------------------------------------------------------
     # Widget creation functions
     # ------------------------------------------------------------
-
     def add_grid(self):
         """Add the displaying grid."""
 
@@ -530,7 +526,6 @@ class Interface(object):
     # ------------------------------------------------------------
     # Grid cell content callback
     # ------------------------------------------------------------
-
     def sort_by_time(self, model, iter1, iter2, data=None):
         """The sort function where we sort by the datetime.datetime object"""
 
@@ -619,7 +614,6 @@ class Interface(object):
     # ------------------------------------------------------------
 
     # Non-widget attached callbacks
-
     def set_auto_refresh(self):
         """Configure auto-refresh of tweets every `interval` minutes"""
 
@@ -718,7 +712,6 @@ class Interface(object):
         return True
 
     # Main window callbacks
-
     def size_request(self, widget, requisition, data=None):
         """Callback when the window changes its sizes. We use it to set the
         proper word-wrapping for the message column."""
@@ -757,7 +750,7 @@ class Interface(object):
     def quit(self, widget, user_data=None):
         """Callback when the window is destroyed (e.g. when the user closes
         the application."""
-        
+
         # this is really annoying: if the threads are locked doing some IO
         # requests, the application will not quit. Displaying this message is
         # the only option we have right now.
@@ -822,7 +815,6 @@ class Interface(object):
         return
 
     # settings callbacks
-
     def show_settings(self, widget, user_data=None):
         """Create and display the settings window."""
 
@@ -869,9 +861,7 @@ class Interface(object):
 
         return True
 
-
     # update status
-
     def update_status(self, user_data=None):
         """Update the user status on Twitter."""
 
@@ -1010,7 +1000,6 @@ class Interface(object):
         gtk.gdk.threads_leave()
 
     # post related callbacks
-
     def reply_tweet(self, widget, user_data=None):
         """Reply by putting the username in your input"""
         cursor = self.grid.get_cursor()
@@ -1030,7 +1019,8 @@ class Interface(object):
         self.window.set_focus(self.update_text)
         self.update_text.set_position(len(status))
 
-        self.in_reply_to_status_id = int(self.grid_store.get_value(iter, Columns.ID))
+        self.in_reply_to_status_id = \
+            int(self.grid_store.get_value(iter, Columns.ID))
         self.log.debug('In reply to: %d' % (self.in_reply_to_status_id))
 
     def retweet(self, widget, user_data=None):
@@ -1253,7 +1243,6 @@ class Interface(object):
     # action callbacks
     # (yes, settings should be here, but there are more settings-related
     # callbacks, so let's keep them together somewhere else)
-
     def open_url(self, source, url):
         """Simply opens specified url in new browser tab. We need source
         parameter so that this function can be used as an event callback"""
@@ -1358,17 +1347,13 @@ class Interface(object):
     # ------------------------------------------------------------
     # Helper functions
     # ------------------------------------------------------------
-
     def clear_list(self):
         """Clear the list, so we can add more items."""
-
         self.grid_store.clear()
-
         return
 
     def save_interface_prefs(self):
         """Using the save callback, save all this interface preferences."""
-
         self.prefs['refresh_interval'] = \
                 self.refresh_interval_field.get_value_as_int()
 
@@ -1396,8 +1381,7 @@ class Interface(object):
 
         # Check if we are running low on our limit
         reset_time = datetime.datetime.fromtimestamp(
-                        int(data['reset_time_in_seconds'])
-                        )
+                        int(data['reset_time_in_seconds']))
 
         if reset_time < datetime.datetime.now():
             # Clock differences can cause this
@@ -1407,7 +1391,7 @@ class Interface(object):
         mins_till_reset = time_delta.seconds/60 # Good enough!
         needed_hits = mins_till_reset/self.prefs['refresh_interval']
         remaining_hits = int(data['remaining_hits'])
-        
+
         if needed_hits > remaining_hits:
             gtk.gdk.threads_enter()
             error_dialog = gtk.MessageDialog(parent=self.window,
@@ -1421,10 +1405,9 @@ class Interface(object):
                     "current refresh rate (every %d minutes), you will " \
                     "exhaust your limit within %d minutes. You should " \
                     "consider increasing the refresh interval in Mitter's " \
-                    "Settings dialog." % (remaining_hits, mins_till_reset, 
-                        self.prefs['refresh_interval'], 
-                        remaining_hits * self.prefs['refresh_interval'] )
-                    )
+                    "Settings dialog." % (remaining_hits, mins_till_reset,
+                        self.prefs['refresh_interval'],
+                        remaining_hits * self.prefs['refresh_interval']))
             error_dialog.connect("response", lambda *a:
                     error_dialog.destroy())
             error_dialog.run()
@@ -1470,7 +1453,7 @@ class Interface(object):
         loader.close()
 
         user_pic = loader.get_pixbuf()
-        user_pic  = user_pic.scale_simple(48, 48, gtk.gdk.INTERP_BILINEAR)
+        user_pic = user_pic.scale_simple(48, 48, gtk.gdk.INTERP_BILINEAR)
         self.user_pics[id] = user_pic
         self.pic_queue.discard(id)
 
@@ -1484,7 +1467,6 @@ class Interface(object):
     # ------------------------------------------------------------
     # Required functions for all interfaces
     # ------------------------------------------------------------
-
     def __call__(self):
         """Call function; displays the interface. This method should appear on
         every interface."""
