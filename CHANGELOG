@@ -1,3 +1,13 @@
+2009-05-19: Gergely Imreh
+
+  feature: status icon popup menu (right-click), currently
+     only few actions, should have more in future.
+
+  backport: get ./check from 1.0.0alpha1, to comb source
+     with pyflakes and PEP8 Python Style Guide
+
+  fix: ui_pygtk cleaning up according to ./check
+
 2009-05-18: Gergely Imreh
 
   mitter-fork: Created new fork from stable mitter 0.4.5
