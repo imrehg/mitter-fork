@@ -1,8 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Mitter, a Maemo client for Twitter.
-# Copyright (C) 2007, 2008  Julio Biason, Deepak Sarda
+# Mitter-fork, iteration of Mitter, a Maemo client for Twitter.
+# Copyright (C) 2007, 2008  Julio Biason, Deepak Sarda, Mitter Contributors
+# Copyright (C) 2009  Gergely Imreh
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
