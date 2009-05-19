@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # Mitter-fork, iteration of Mitter, a Maemo client for Twitter.
