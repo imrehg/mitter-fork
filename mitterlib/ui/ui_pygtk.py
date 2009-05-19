@@ -229,6 +229,7 @@ class Interface(object):
         self.systray = gtk.StatusIcon()
         self.systray.set_from_file(self.app_icon)
         self.systray.connect('activate', self.systray_cb)
+        self.systray.connect('popup-menu', self.systray_popup)
         self.systray.set_tooltip('Mitter: Click to toggle window visibility.')
         self.systray.set_visible(True)
         return
@@ -255,6 +256,33 @@ class Interface(object):
                     self.prefs['position_y'])
             self.window.deiconify()
             self.window.present()
+
+    def systray_popup(self, widget, button, activate_time, user_param=None):
+        self.log.debug("System tray icon: Popup menu activated")
+        
+        popup_menu = gtk.Menu()
+        popup_menu_items = []
+        
+        # Do refresh from icon
+        item = gtk.ImageMenuItem('gtk-refresh',None)
+        item.connect('activate',self.refresh)
+        popup_menu_items.append(item)
+
+        # Accidental protection
+        item = gtk.SeparatorMenuItem()
+        popup_menu_items.append(item)
+        
+        # Quit from icon
+        item = gtk.ImageMenuItem('gtk-quit',None)
+        item.connect('activate',self.quit)
+        popup_menu_items.append(item)
+        
+        # Join them all up
+        for item in popup_menu_items:
+            popup_menu.append(item)
+
+        popup_menu.show_all()
+        gtk.Menu.popup(popup_menu, None, None, None, button, activate_time)
 
     def create_settings_dialog(self):
         """Creates the settings dialog."""
@@ -745,8 +773,9 @@ class Interface(object):
         if getattr(event, 'in_', False):
             self.window.set_urgency_hint(False)
             if self.systray:
-                self.systray.set_tooltip('Mitter: Click to toggle ' \
-                        'window visibility.')
+                self.systray.set_tooltip('Mitter:\n' \
+                    'Left-click to toggle window visibility.\n' \
+                    'Right-click to bring up pop-up menu')
                 self.systray.set_from_file(self.app_icon)
             self.unread_tweets = 0
         return
