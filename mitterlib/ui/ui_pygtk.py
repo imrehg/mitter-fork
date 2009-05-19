@@ -17,29 +17,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import pygtk
-pygtk.require('2.0')
-import gtk
-import gobject
+try:
+    import pygtk
+    pygtk.require('2.0')
+    import gtk
+    import gobject
 
-gobject.threads_init()
-gtk.gdk.threads_init()
+    gobject.threads_init()
+    gtk.gdk.threads_init()
 
-import datetime
-import re
-import sys
-import os
-import os.path
-import timesince
-import logging
+    import datetime
+    import re
+    import timesince
+    import logging
 
-import mitterlib as util
-
-from notify import Notify
-from mitterlib.constants import gpl_3, version
-from mitterlib.ui.utils import str_len
-
-from optparse import OptionGroup
+    import mitterlib as util
+    from notify import Notify
+    from mitterlib.constants import gpl_3, version
+    from mitterlib.ui.utils import str_len
+    from optparse import OptionGroup
+except Exception, e:
+    print('Import error: %s' % str(e))
 
 namespace = 'pygtk'
 threads = 2
