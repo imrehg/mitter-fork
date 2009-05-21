@@ -26,6 +26,7 @@ try:
 
     gobject.threads_init()
     gtk.gdk.threads_init()
+    gtk.gdk.threads_enter()
 
     import datetime
     import re
@@ -1488,3 +1489,4 @@ class Interface(object):
         # gobject.idle_add(self.prune_grid_store)
 
         gtk.main()
+        gtk.gdk.threads_leave()
