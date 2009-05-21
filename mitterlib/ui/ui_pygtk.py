@@ -1016,7 +1016,7 @@ class Interface(object):
         path = cursor[0]
         iter = self.grid_store.get_iter(path)
         username = self.grid_store.get_value(iter, Columns.USERNAME)
-        text_insert = '@%s: ' % (username)
+        text_insert = '@%s ' % (username)
 
         self.log.debug('Inserting reply text: %s' % (text_insert))
 
